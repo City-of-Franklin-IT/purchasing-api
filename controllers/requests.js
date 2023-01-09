@@ -98,7 +98,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
 
   // sendPendingApprovalEmail(['andrew.southern@franklintn.gov', 'joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], request, `http://cofasv19/ffd-purchasing/approval/${request.uuid}`)
 
-  sendPendingApprovalEmail(['andrew.southern@franklintn.gov'], request, `http://cofasv19/ffd-purchasing/approval/${request.uuid}`)
+  sendPendingApprovalEmail(['andrew.southern@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`)
 
   res.status(201).json({
     success: true,
@@ -279,7 +279,7 @@ exports.createRequestApproval = asyncHandler(async (req, res, next) => {
     })
 
     sendStatusEmail(request, "Pending Officer Appoval")
-    sendPendingApprovalEmail(officerApprovalEmail, request, "http://cofasv19/ffd-purchasing")
+    sendPendingApprovalEmail(officerApprovalEmail, request, "https://apps.franklintn.gov/ffd-purchasing")
   } // Request denied by department 
   else if(!departmentApproval) {
     await PurchaseRequest.update({
