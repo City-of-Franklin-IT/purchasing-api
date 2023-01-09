@@ -31,10 +31,10 @@ const purchases = require('./routes/purchases')
 const attachments = require('./routes/attachments')
 
 // Mount routers
-app.use('/api/v1/ffd/purchasing/ldap', purchasingLdap)
-app.use('/api/v1/ffd/purchasing/requests', requests)
-app.use('/api/v1/ffd/purchasing/purchases', purchases)
-app.use('/api/v1/ffd/purchasing/attachments', attachments)
+app.use('/api/v1/purchasing/ffd/ldap', purchasingLdap)
+app.use('/api/v1/purchasing/ffd/requests', requests)
+app.use('/api/v1/purchasing/ffd/purchases', purchases)
+app.use('/api/v1/purchasing/ffd/attachments', attachments)
 
 // Error handler
 app.use(errorHandler)
