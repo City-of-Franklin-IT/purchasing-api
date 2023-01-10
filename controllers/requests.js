@@ -240,7 +240,7 @@ exports.createRequestApproval = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Could not find project with id #${requestId}`, 500))
   }
 
-  const url = `https://apps.franklintn.gov/purchasing/${request.uuid}`
+  const url = `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`
 
   if(requiresAP === true) {
     await PurchaseRequest.update({
@@ -352,7 +352,7 @@ exports.updateRequestApproval = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Could not find request with ID #${requestId}`, 500))
   }
 
-  const url = `https://apps.franklintn.gov/purchasing/${request.uuid}`
+  const url = `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`
 
   if(requiresAP === true) {
     await PurchaseRequest.update({
