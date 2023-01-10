@@ -240,6 +240,8 @@ exports.createRequestApproval = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Could not find project with id #${requestId}`, 500))
   }
 
+  const url = `https://apps.franklintn.gov/purchasing/${request.uuid}`
+
   if(requiresAP === true) {
     await PurchaseRequest.update({
       status: "Approved For AP"
@@ -251,6 +253,8 @@ exports.createRequestApproval = asyncHandler(async (req, res, next) => {
       returning: true,
       plain: true
     })
+
+    sendStatusEmail(request, "Approved For AP")
   } // Approved by department and does not need officer approval
   else if((departmentApproval === true && requiresOfficerApproval === false)) {
     await PurchaseRequest.update({
@@ -264,7 +268,7 @@ exports.createRequestApproval = asyncHandler(async (req, res, next) => {
       plain: true
     })
 
-    sendStatusEmail(request, "Approved")
+    sendStatusEmail(request, "Approved", url)
   } // Approved by department and requires officer approval
   else if(departmentApproval && requiresOfficerApproval) {
     await PurchaseRequest.update({
@@ -279,7 +283,7 @@ exports.createRequestApproval = asyncHandler(async (req, res, next) => {
     })
 
     sendStatusEmail(request, "Pending Officer Appoval")
-    sendPendingApprovalEmail(officerApprovalEmail, request, "https://apps.franklintn.gov/ffd-purchasing")
+    sendPendingApprovalEmail(officerApprovalEmail, request, url)
   } // Request denied by department 
   else if(!departmentApproval) {
     await PurchaseRequest.update({
@@ -348,8 +352,23 @@ exports.updateRequestApproval = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Could not find request with ID #${requestId}`, 500))
   }
 
-  // Department approved - does not requires officer approval
-  if((departmentApproval === true && requiresOfficerApproval === false)) {
+  const url = `https://apps.franklintn.gov/purchasing/${request.uuid}`
+
+  if(requiresAP === true) {
+    await PurchaseRequest.update({
+      status: "Approved For AP"
+    },
+    {
+      where: {
+        requestId
+      },
+      returning: true,
+      plain: true
+    })
+
+    sendStatusEmail(request, "Approved For AP")
+  } // Department approved - does not requires officer approval
+  else if ((departmentApproval === true && requiresOfficerApproval === false)) {
     await PurchaseRequest.update({
       status: "Approved"
     },
@@ -361,7 +380,7 @@ exports.updateRequestApproval = asyncHandler(async (req, res, next) => {
       plain: true
     })
 
-    sendStatusEmail(request, "Approved")
+    sendStatusEmail(request, "Approved", url)
   } // Department approved - requires officer approval and is awaiting officer approval
   else if((departmentApproval === true && requiresOfficerApproval === true && (officerApproval === null))) {
     await PurchaseRequest.update({
@@ -376,6 +395,7 @@ exports.updateRequestApproval = asyncHandler(async (req, res, next) => {
     })
 
     sendStatusEmail(request, "Pending Officer Approval")
+    sendPendingApprovalEmail(officerApprovalEmail, request, url)
   } // Approved by department and officer
   else if((departmentApproval === true && officerApproval === true)) {
     await PurchaseRequest.update({
@@ -389,7 +409,7 @@ exports.updateRequestApproval = asyncHandler(async (req, res, next) => {
       plain: true
     })
 
-    sendStatusEmail(request, "Approved")
+    sendStatusEmail(request, "Approved", url)
   } // Denied by department or officer
   else if((departmentApproval === false || officerApproval === false)) {
     await PurchaseRequest.update({
