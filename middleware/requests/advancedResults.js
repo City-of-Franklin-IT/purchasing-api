@@ -63,7 +63,9 @@ const advancedResults = (model, populate) => async (req, res, next) => {
         }
       },
       order,
-      include
+      include,
+      limit,
+      offset
     })
   } else if(reqQuery.vendor) {
     query = model.findAndCountAll({
@@ -73,7 +75,9 @@ const advancedResults = (model, populate) => async (req, res, next) => {
         }
       },
       order,
-      include
+      include,
+      limit,
+      offset
     })
   } else if(reqQuery.requestLocation) {
     query = model.findAndCountAll({
@@ -81,22 +85,24 @@ const advancedResults = (model, populate) => async (req, res, next) => {
         requestLocation: reqQuery.requestLocation
       },
       order,
-      include
+      include,
+      limit,
+      offset
     })
   } else {
     query = model.findAndCountAll({
       order,
-      include
+      include,
+      limit,
+      offset
     })
   }
 
   // Execute query
   let results = await query
 
-  if(results) {
-    results = getPagingData(results, page, limit)
-  }
-
+  results = getPagingData(results, page, limit)
+  
   res.advancedResults = {
     success: true,
     data: results,

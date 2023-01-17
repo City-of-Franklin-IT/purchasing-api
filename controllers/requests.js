@@ -3,7 +3,6 @@ const ErrorResponse = require('../utils/errorResponse')
 const { PurchaseRequest, RequestAttachment, RequestApproval, RequestPurchase, RequestPurchaseAttachment } = require('../models')
 const sendStatusEmail = require('../utils/sendStatusEmail')
 const sendPendingApprovalEmail = require('../utils/sendPendingApprovalEmail')
-const normalizeDateTime = require('../utils/normalizeDateTime')
 
 // @desc    Get requests
 // @route   GET /api/v1/ffd/purchasing/requests
@@ -96,9 +95,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Unable to create new request", 500))
   }
 
-  // sendPendingApprovalEmail(['andrew.southern@franklintn.gov', 'joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], request, `http://cofasv19/ffd-purchasing/approval/${request.uuid}`)
-
-  sendPendingApprovalEmail(['andrew.southern@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`)
+  sendPendingApprovalEmail(['andrew.southern@franklintn.gov', 'joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], request, `http://cofasv19/ffd-purchasing/approval/${request.uuid}`)
 
   res.status(201).json({
     success: true,
