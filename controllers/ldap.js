@@ -89,8 +89,6 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 
     let results = await search('dc=franklin-gov, dc=com', options)
 
-    console.log(results)
-
     if(Object.keys(results).length > 0) {
       let userObj = {
         email: username + "@franklintn.gov",

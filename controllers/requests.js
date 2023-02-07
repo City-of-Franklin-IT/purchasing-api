@@ -95,7 +95,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Unable to create new request", 500))
   }
 
-  sendPendingApprovalEmail(['andrew.southern@franklintn.gov', 'joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`)
+  sendPendingApprovalEmail(['andrew.southern@franklintn.gov', 'joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing`)
 
   res.status(201).json({
     success: true,
@@ -237,7 +237,7 @@ exports.createRequestApproval = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Could not find project with id #${requestId}`, 500))
   }
 
-  const url = `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`
+  const url = `https://apps.franklintn.gov/ffd-purchasing`
 
   if(requiresAP === true) {
     await PurchaseRequest.update({
