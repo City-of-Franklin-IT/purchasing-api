@@ -95,8 +95,8 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Unable to create new request", 500))
   }
 
-  // sendPendingApprovalEmail(['andrew.southern@franklintn.gov', 'joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`)
-  sendPendingApprovalEmail(['andrew.southern@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`)
+  sendPendingApprovalEmail(['andrew.southern@franklintn.gov', 'joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`)
+  // sendPendingApprovalEmail(['andrew.southern@franklintn.gov'], request, `https://apps.franklintn.gov/ffd-purchasing/approval/${request.uuid}`)
 
   res.status(201).json({
     success: true,
