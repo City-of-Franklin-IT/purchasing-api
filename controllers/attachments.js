@@ -26,7 +26,7 @@ exports.createAttachment = asyncHandler(async (req, res, next) => {
       }
     })
 
-    const fileName = requestId + "_" + (existingAttachments.count + 1) + "." + fileType
+    const fileName = requestId + "_" + (existingAttachments.count + 1) + fileType
 
     await RequestAttachment.create({
       requestId,
@@ -42,7 +42,7 @@ exports.createAttachment = asyncHandler(async (req, res, next) => {
       }
     })
 
-    const fileName = purchaseId + "_" + (existingAttachments.count + 1) + "." + fileType
+    const fileName = purchaseId + "_" + (existingAttachments.count + 1) + fileType
 
     await PurchaseAttachment.create({
       purchaseId,
@@ -58,7 +58,7 @@ exports.createAttachment = asyncHandler(async (req, res, next) => {
       }
     })
 
-    const fileName = requestPurchaseId + "_" + (existingAttachments.count + 1) + "." + fileType
+    const fileName = requestPurchaseId + "_" + (existingAttachments.count + 1) + fileType
 
     await RequestPurchaseAttachment.create({
       requestPurchaseId,

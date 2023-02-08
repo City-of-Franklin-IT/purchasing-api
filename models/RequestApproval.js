@@ -45,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     requiresAP: {
       type: DataTypes.NUMBER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: false
     },
     uuid: {
       type: DataTypes.UUID,

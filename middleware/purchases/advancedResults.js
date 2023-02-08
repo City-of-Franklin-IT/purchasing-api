@@ -45,7 +45,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
       },
       include
     })
-  } else if(reqQuery.hideCompleted) {
+  } else if(reqQuery.hideComplete) {
     query = model.findAndCountAll({
       where: {
         status: {
