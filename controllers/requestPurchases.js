@@ -60,7 +60,7 @@ exports.createRequestPurchase = asyncHandler (async (req, res, next) => {
 // @route   PUT /api/v1/ffd/purchasing/requests/purchase/update/:uuid
 // @access  Private
 exports.updateRequestPurchase = asyncHandler (async (req, res, next) => {
-  const { purchaseDestination, lastFour, OPIQNum, OPIQEntryDate, updatedAt } = req.body
+  const { purchaseDestination, lastFour, OPIQNum, OPIQEntryDate, opiqNA, updatedAt } = req.body
 
   const updatedBy = req.user.email
 
@@ -92,8 +92,8 @@ exports.updateRequestPurchase = asyncHandler (async (req, res, next) => {
 
   const { requestId } = requestPurchase
 
-  // If OPIQNum populated - update request to "Completed"
-  if(!OPIQNum) {
+  // If OPIQNum populated or opiqNA is true - update request to "Completed"
+  if((!OPIQNum && !opiqNA)) {
     await PurchaseRequest.update({
       status: "Purchased"
     },
@@ -102,7 +102,7 @@ exports.updateRequestPurchase = asyncHandler (async (req, res, next) => {
         requestId
       }
     })
-  } else {
+  } else if((OPIQNum || opiqNA)) {
     await PurchaseRequest.update({
       status: "Completed"
     },

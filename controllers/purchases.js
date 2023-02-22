@@ -1,6 +1,7 @@
 const asyncHandler = require('../middleware/async')
 const ErrorResponse = require('../utils/errorResponse')
 const { Purchase, PurchaseAttachment } = require('../models')
+const sendStatusEmail = require('../utils/sendStatusEmail')
 
 // @desc    Get purchases
 // @route   GET /api/v1/ffd/purchasing/purchases
@@ -100,7 +101,7 @@ exports.createPurchase = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/v1/ffd/purchasing/purchase/update/:uuid
 // @access  Public
 exports.updatePurchase = asyncHandler(async (req, res, next) => {
-  const { purchaseDescription, purchaseDestination, purchaseDetails, vendor, purchaseAmount, lastFour, OPIQNum, OPIQEntryDate, updatedAt } = req.body
+  const { purchaseDescription, purchaseDestination, purchaseDetails, vendor, purchaseAmount, lastFour, OPIQNum, OPIQEntryDate, opiqNA, updatedAt } = req.body
 
   const updatedBy = req.user.email
 
@@ -137,9 +138,18 @@ exports.updatePurchase = asyncHandler(async (req, res, next) => {
 
   const { purchaseId } = purchase
 
-  if(!OPIQNum) {
+  if((!OPIQNum && !opiqNA)) {
     await Purchase.update({
       status: "Purchased"
+    },
+    {
+      where: {
+        purchaseId
+      }
+    })
+  } else if((OPIQNum || opiqNA)) {
+    await Purchase.update({
+      status: "Completed"
     },
     {
       where: {
