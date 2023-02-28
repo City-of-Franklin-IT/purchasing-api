@@ -1,6 +1,7 @@
 const asyncHandler = require('../middleware/async')
 const ErrorResponse = require('../utils/errorResponse')
 const { PurchaseRequest, RequestPurchase, RequestPurchaseAttachment } = require('../models')
+const sendPurchaseEmail = require('../utils/sendPurchaseEmail')
 
 // @desc    Create request purchase
 // @route   POST /api/v1/ffd/purchasing/requests/purchase/create
@@ -28,6 +29,8 @@ exports.createRequestPurchase = asyncHandler (async (req, res, next) => {
   if(!requestPurchase) {
     return next(new ErrorResponse("Could not create new request purchase", 500))
   }
+
+  sendPurchaseEmail(['joanne.finn@franklintn.gov', 'beth.reeser@franklintn.gov'], requestPurchase)
 
   // If OPIQNum populated - update request to "Completed"
   if(!OPIQNum) {
