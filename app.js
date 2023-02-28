@@ -21,7 +21,11 @@ app.use(xss())
 
 // Enable CORS
 app.use(cors())
-app.options('*', cors())
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://cofasv19')
+  next()
+})
+
 app.set('port', process.env.PORT)
 
 // Route files
