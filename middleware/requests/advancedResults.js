@@ -82,7 +82,9 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   } else if(reqQuery.requestLocation) {
     query = model.findAndCountAll({
       where: {
-        requestLocation: reqQuery.requestLocation
+        requestLocation: {
+          [Op.like]: "%" + reqQuery.requestLocation + "%"
+        }
       },
       order,
       include,
