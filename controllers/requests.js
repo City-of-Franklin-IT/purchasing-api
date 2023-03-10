@@ -50,18 +50,6 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const createdBy = req.user.email
   const updatedBy = req.user.email
 
-  // Get current maxID
-  let maxID = await PurchaseRequest.findOne({
-    order: [['id', 'desc']],
-    limit: 1
-  })
-
-  if(!maxID) {
-    maxID = 0
-  } else {
-    maxID = maxID.id
-  }
-
   let fiscalYear 
 
   // Get current fiscal year
@@ -77,7 +65,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   getFiscalYear()
 
   const request = await PurchaseRequest.create({
-    requestId: "REQ" + fiscalYear + "-" + (maxID + 1),
+    requestId: "REQ" + fiscalYear + "-" + Math.floor(Date.now() / 1000),
     requestLocation,
     requestDetails,
     vendor,
